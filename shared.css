@@ -1,0 +1,263 @@
+/* Shared site chrome — North Cackalacky Golf Trip */
+:root {
+  --green-deep: #2a3d2a;
+  --green-mid: #2d4a2d;
+  --green-fairway: #3d6b3d;
+  --green-bright: #a8c8a8;
+  --gold: #ffe9c3;
+  --gold-light: #fff3de;
+  --red-team: #c94040;
+  --red-light: #e86060;
+  --blue-team: #3060a8;
+  --blue-light: #5080cc;
+  --cream: #ffe9c3;
+  --parchment: #ffe9c3;
+  --muted: #c8b89a;
+  --forest-text: #345b38;
+  --ink: #345b38;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--green-deep);
+  color: var(--cream);
+  font-family: "DM Mono", monospace;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(61, 107, 61, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(42, 61, 42, 0.5) 0%, transparent 60%);
+}
+
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+/* ——— Sticky top nav ——— */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(42, 61, 42, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 233, 195, 0.12);
+}
+
+.site-nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.site-nav-home {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.site-nav-home:hover {
+  color: var(--gold-light);
+}
+
+.site-nav-home-sub {
+  display: block;
+  font-family: "DM Mono", monospace;
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.site-nav-actions {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 233, 195, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.nav-hamburger:hover {
+  border-color: rgba(255, 233, 195, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.nav-hamburger:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--cream);
+  border-radius: 1px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: min(320px, calc(100vw - 32px));
+  padding: 8px 0;
+  background: rgba(30, 42, 30, 0.98);
+  border: 1px solid rgba(255, 233, 195, 0.15);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  list-style: none;
+}
+
+.nav-dropdown[hidden] {
+  display: none !important;
+}
+
+.nav-dropdown a {
+  display: block;
+  padding: 12px 18px;
+  font-size: 0.78rem;
+  color: var(--cream);
+  text-decoration: none;
+  line-height: 1.35;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.15s;
+}
+
+.nav-dropdown li:last-child a {
+  border-bottom: none;
+}
+
+.nav-dropdown a:hover,
+.nav-dropdown a:focus-visible {
+  background: rgba(255, 233, 195, 0.08);
+  outline: none;
+}
+
+.nav-dropdown a[aria-current="page"] {
+  background: rgba(255, 233, 195, 0.08);
+  border-left: 3px solid var(--gold);
+  padding-left: 15px;
+}
+
+.nav-dropdown .nav-dd-kicker {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+/* Round info pages — minimal typography */
+.round-info-page .info-hero {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 233, 195, 0.12);
+}
+
+.round-info-page .info-hero .flag-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.round-info-page .info-hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.round-info-page .info-hero .subtitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 233, 195, 0.7);
+  margin-top: 8px;
+}
+
+.round-info-page .info-content {
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--parchment);
+}
+
+.round-info-page .info-content h2 {
+  font-family: Georgia, serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin: 28px 0 12px;
+}
+
+.round-info-page .info-content p {
+  margin-bottom: 14px;
+}
+
+.round-info-page .info-content ul,
+.round-info-page .info-content ol {
+  margin: 0 0 14px 1.25rem;
+}
+
+.round-info-page .info-content li {
+  margin-bottom: 6px;
+}
+
+.round-info-page .info-placeholder {
+  padding: 20px;
+  border: 1px dashed rgba(255, 233, 195, 0.25);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .site-nav-inner {
+    padding: 10px 12px;
+  }
+}
