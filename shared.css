@@ -33,6 +33,15 @@ body {
     radial-gradient(ellipse at 80% 70%, rgba(42, 61, 42, 0.5) 0%, transparent 60%);
 }
 
+/* Links: match surrounding text (no default blue), bold, always underlined */
+a,
+a:visited {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .wrapper {
   max-width: 900px;
   margin: 0 auto;
@@ -65,7 +74,6 @@ body {
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--gold);
-  text-decoration: none;
   letter-spacing: -0.02em;
   line-height: 1.25;
 }
@@ -159,7 +167,6 @@ body {
   padding: 12px 18px;
   font-size: 0.78rem;
   color: var(--cream);
-  text-decoration: none;
   line-height: 1.35;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: background 0.15s;
@@ -190,70 +197,186 @@ body {
   margin-bottom: 4px;
 }
 
-/* Round info pages — minimal typography */
-.round-info-page .info-hero {
-  text-align: center;
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(255, 233, 195, 0.12);
+/* Round info pages — photo hero + day sheet */
+body.round-info-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.round-info-page .info-hero .flag-icon {
-  font-size: 2rem;
-  margin-bottom: 8px;
+body.round-info-page .site-nav {
+  flex-shrink: 0;
+}
+
+.round-info-page .round-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+}
+
+.day-hero {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  height: min(42vh, 340px);
+  overflow: hidden;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+/* Use <img class="day-hero-img" src="images/..."> in HTML so paths resolve
+   relative to each page (reliable on GitHub Pages; CSS url() can confuse browsers). */
+.day-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
+  z-index: 0;
 }
 
-.round-info-page .info-hero h1 {
+.day-hero-banner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  background: #3d5242;
+  color: #fdf2d0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.5rem, 5vw, 2.25rem);
-  font-weight: 900;
-  color: var(--gold);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-size: clamp(1.75rem, 5vw, 2.35rem);
+  font-weight: 700;
+  padding: 0.5rem 1.15rem 0.6rem;
+  line-height: 1;
+  border-radius: 0;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
 }
 
-.round-info-page .info-hero .subtitle {
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 233, 195, 0.7);
-  margin-top: 8px;
+.day-sheet {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 80px;
+  box-sizing: border-box;
 }
 
-.round-info-page .info-content {
-  font-size: 0.85rem;
-  line-height: 1.65;
-  color: var(--parchment);
+.day-sheet .day-section {
+  width: 100%;
+  max-width: 900px;
 }
 
-.round-info-page .info-content h2 {
+.day-sheet--r1,
+.day-sheet--r2 {
+  background: #f5e6be;
+}
+
+.day-sheet--r3 {
+  background: #f5e6c4;
+}
+
+.day-sheet--r4 {
+  background: #fdf2d0;
+}
+
+.day-section + .day-section {
+  margin-top: 32px;
+}
+
+.day-section h2 {
   font-family: Georgia, serif;
-  font-size: 1.2rem;
-  color: var(--gold);
-  margin: 28px 0 12px;
-}
-
-.round-info-page .info-content p {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #3d5242;
   margin-bottom: 14px;
 }
 
-.round-info-page .info-content ul,
-.round-info-page .info-content ol {
-  margin: 0 0 14px 1.25rem;
+.leader-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
 }
 
-.round-info-page .info-content li {
-  margin-bottom: 6px;
+.leader-label {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  color: #3d5242;
+  flex-shrink: 0;
 }
 
-.round-info-page .info-placeholder {
-  padding: 20px;
-  border: 1px dashed rgba(255, 233, 195, 0.25);
-  border-radius: 8px;
-  color: var(--muted);
+.leader-dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(61, 82, 66, 0.5);
+  min-height: 0.35em;
+  margin-bottom: 3px;
+}
+
+.leader-value {
+  font-family: "DM Mono", monospace;
   font-size: 0.78rem;
-  text-align: center;
+  color: #3d5242;
+  flex-shrink: 0;
+  text-align: right;
+  max-width: 58%;
+}
+
+.leader-value a.course-link {
+  text-decoration-color: rgba(61, 82, 66, 0.35);
+}
+
+.leader-value a.course-link:hover {
+  text-decoration-color: rgba(61, 82, 66, 0.65);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 36px;
+}
+
+.col-block h3 {
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #3d5242;
+  margin-bottom: 10px;
+}
+
+.col-block h3 + h3 {
+  margin-top: 16px;
+}
+
+.col-block ul {
+  margin: 0 0 0 1.1rem;
+  padding: 0;
+}
+
+.col-block li {
+  font-family: "DM Mono", monospace;
+  font-size: 0.76rem;
+  color: #3d5242;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .leader-value {
+    max-width: 65%;
+    font-size: 0.72rem;
+  }
 }
 
 @media (max-width: 600px) {
