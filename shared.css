@@ -24,13 +24,17 @@
 }
 
 body {
-  background: var(--green-deep);
+  background-color: var(--green-deep);
   color: var(--cream);
   font-family: "DM Mono", monospace;
   min-height: 100vh;
   background-image:
     radial-gradient(ellipse at 20% 30%, rgba(61, 107, 61, 0.35) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 70%, rgba(42, 61, 42, 0.5) 0%, transparent 60%);
+    radial-gradient(ellipse at 80% 70%, rgba(42, 61, 42, 0.5) 0%, transparent 60%),
+    url("images/background.jpeg");
+  background-size: auto, auto, cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Links: match surrounding text (no default blue), bold, always underlined */
