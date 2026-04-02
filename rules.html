@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fine Print — North Cackalacky Golf Trip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/NC%20favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/NC.png">
+</head>
+<body class="fine-print-page">
+  <nav class="site-nav" aria-label="Main">
+    <div class="site-nav-inner">
+      <a href="index.html" class="site-nav-home">Scorecard<span class="site-nav-home-sub">Home</span></a>
+      <div class="site-nav-actions">
+        <button type="button" class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-controls="site-nav-menu" aria-label="Open round information menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul id="site-nav-menu" class="nav-dropdown" hidden>
+          <li>
+            <a href="round1.html">
+              <span class="nav-dd-kicker">Round 1</span>
+              Best 2 of 3 Gross
+            </a>
+          </li>
+          <li>
+            <a href="round2.html">
+              <span class="nav-dd-kicker">Round 2</span>
+              3-Man Team Scramble
+            </a>
+          </li>
+          <li>
+            <a href="round3.html">
+              <span class="nav-dd-kicker">Round 3</span>
+              Singles Match Play
+            </a>
+          </li>
+          <li>
+            <a href="round4.html">
+              <span class="nav-dd-kicker">Round 4</span>
+              Individual Stroke Play (Net)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrapper">
+    <div class="fine-print-card">
+      <h1 class="fine-print-title"><span class="kicker">*</span>Fine Print</h1>
+
+      <section class="fine-print-section" aria-labelledby="payout">
+        <h2 id="payout">Payout:</h2>
+        <p><strong>$100</strong> Buy in</p>
+        <p class="muted" style="margin-top:10px">Winning team: <strong>$500</strong> (Per Player: ~<strong>$166</strong>)</p>
+        <p class="muted">Individual Champion: <strong>$100</strong></p>
+        <p class="muted" style="margin-top:10px"><strong>*Max Earnings</strong> $266<br>(individual champ on winning team)</p>
+      </section>
+
+      <section class="fine-print-section" aria-labelledby="handicap">
+        <h2 id="handicap">Handicap</h2>
+        <p>Singles Matches and Final Stroke Play round are handicapped. Strokes can only be taken on the associated HCP hole.</p>
+      </section>
+
+      <section class="fine-print-section" aria-labelledby="tiebreakers">
+        <h2 id="tiebreakers">Tie Breakers:</h2>
+        <p>Individual match ties split points evenly.</p>
+
+        <div style="height:14px"></div>
+
+        <p><strong>Team Competition:</strong></p>
+        <p class="muted">Weekend point total ties are broken by:</p>
+        <ol class="muted">
+          <li>Team that won most singles matches</li>
+          <li>Team with the most points in Round 4 (stroke play)</li>
+          <li>Team Round 4 Net total</li>
+        </ol>
+
+        <div style="height:14px"></div>
+
+        <p><strong>Individual Champion:</strong></p>
+        <p class="muted">Individual match ties split points evenly.</p>
+
+        <div style="height:14px"></div>
+
+        <p class="muted">Weekend point total ties are broken by:</p>
+        <ol class="muted">
+          <li>Round 4 Net Score</li>
+          <li>Round 3 and 4 Net score</li>
+          <li>Round 4 Gross</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="site-footer-inner">
+      <a href="rules.html" aria-current="page">Fine Print</a>
+      <span class="site-footer-meta">2026 Golf Trip</span>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+</body>
+</html>
