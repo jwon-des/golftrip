@@ -539,73 +539,9 @@
     </div>
     <div class="round-body" id="body-r3">
       <div class="info-box">
-        <strong>Scoring:</strong> Each of 3 matches worth 1 point. Win = 1 pt individual + 1 pt for team. Tie = 0.5 pts each.
+        <strong>Handicap:</strong> Sam −2 strokes and Ben −9 over the round (taken on HCP holes). <strong>Scoring:</strong> Enter gross per hole; net decides each hole. Most holes won wins the match (halved if tied). Each match = 1 pt: win = 1 ind + 1 team · halved = 0.5 each.
       </div>
-      <div id="r3-matches">
-        <div class="match-block">
-          <label class="small">Match 1</label>
-          <div class="match-vs-grid">
-            <div>
-              <label class="small">🔴 Red player</label>
-              <select id="r3-m1-red"><option value="">— Select —</option><option>Sam</option><option>Scott</option><option>Jeremy</option></select>
-            </div>
-            <div class="vs-label">vs</div>
-            <div>
-              <label class="small">🔵 Blue player</label>
-              <select id="r3-m1-blue"><option value="">— Select —</option><option>CJ</option><option>Josh</option><option>Ben</option></select>
-            </div>
-          </div>
-          <label class="small">Result</label>
-          <select id="r3-m1-result">
-            <option value="">— Select result —</option>
-            <option value="red">Red wins</option>
-            <option value="blue">Blue wins</option>
-            <option value="tie">Tie / Halved</option>
-          </select>
-        </div>
-        <div class="match-block">
-          <label class="small">Match 2</label>
-          <div class="match-vs-grid">
-            <div>
-              <label class="small">🔴 Red player</label>
-              <select id="r3-m2-red"><option value="">— Select —</option><option>Sam</option><option>Scott</option><option>Jeremy</option></select>
-            </div>
-            <div class="vs-label">vs</div>
-            <div>
-              <label class="small">🔵 Blue player</label>
-              <select id="r3-m2-blue"><option value="">— Select —</option><option>CJ</option><option>Josh</option><option>Ben</option></select>
-            </div>
-          </div>
-          <label class="small">Result</label>
-          <select id="r3-m2-result">
-            <option value="">— Select result —</option>
-            <option value="red">Red wins</option>
-            <option value="blue">Blue wins</option>
-            <option value="tie">Tie / Halved</option>
-          </select>
-        </div>
-        <div class="match-block">
-          <label class="small">Match 3</label>
-          <div class="match-vs-grid">
-            <div>
-              <label class="small">🔴 Red player</label>
-              <select id="r3-m3-red"><option value="">— Select —</option><option>Sam</option><option>Scott</option><option>Jeremy</option></select>
-            </div>
-            <div class="vs-label">vs</div>
-            <div>
-              <label class="small">🔵 Blue player</label>
-              <select id="r3-m3-blue"><option value="">— Select —</option><option>CJ</option><option>Josh</option><option>Ben</option></select>
-            </div>
-          </div>
-          <label class="small">Result</label>
-          <select id="r3-m3-result">
-            <option value="">— Select result —</option>
-            <option value="red">Red wins</option>
-            <option value="blue">Blue wins</option>
-            <option value="tie">Tie / Halved</option>
-          </select>
-        </div>
-      </div>
+      <div id="r3-matches"></div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-primary" onclick="calcR3()">Calculate Points</button>
         <button class="btn btn-secondary" onclick="clearRound('r3')">Clear</button>
@@ -687,7 +623,14 @@ const PLAYERS = [
 const COURSE_HCP = { CJ:0, Josh:3, Ben:14, Sam:2, Scott:3, Jeremy:4 };
 const RED_NAMES  = ['Sam','Scott','Jeremy'];
 const BLUE_NAMES = ['CJ','Josh','Ben'];
-const LS_KEY = 'ncgolf-scores-v2';
+const LS_KEY = 'ncgolf-scores-v3';
+
+/** Round 3 fixed singles matchups; strokeHoles[player] = holes where that player receives 1 stroke */
+const R3_MATCHES = [
+  { id: 1, red: 'Scott',  blue: 'Josh',   strokeHoles: {} },
+  { id: 2, red: 'Sam',    blue: 'CJ',     strokeHoles: { Sam: [2, 17] } },
+  { id: 3, red: 'Jeremy', blue: 'Ben',    strokeHoles: { Ben: [1, 2, 5, 9, 12, 13, 14, 16, 17] } },
+];
 
 const state = {
   individualPts: { CJ:0, Josh:0, Ben:0, Sam:0, Scott:0, Jeremy:0 },
@@ -852,6 +795,112 @@ function buildR4Inputs() {
   });
 }
 
+function formatR3StrokeNote(match) {
+  const parts = [];
+  Object.keys(match.strokeHoles).forEach(player => {
+    const hs = match.strokeHoles[player];
+    if (hs && hs.length) {
+      const n = hs.length;
+      parts.push(`${player} −${n} stroke${n === 1 ? '' : 's'} (HCP holes)`);
+    }
+  });
+  return parts.length ? parts.join(' · ') : 'Straight up — no handicap strokes.';
+}
+
+function r3StrokeCount(match, playerName, hole) {
+  const hs = match.strokeHoles[playerName];
+  if (!hs) return 0;
+  return hs.includes(hole) ? 1 : 0;
+}
+
+function buildR3Inputs() {
+  const container = document.getElementById('r3-matches');
+  if (!container) return;
+  const holes = Array.from({ length: 18 }, (_, i) => i + 1);
+  let html = '';
+  R3_MATCHES.forEach(m => {
+    const note = formatR3StrokeNote(m);
+    html += `<div class="match-block" id="r3-block-${m.id}">
+      <label class="small">Match ${m.id} — <span class="dot red"></span>${m.red} vs <span class="dot blue"></span>${m.blue}</label>
+      <div class="small" style="color:var(--muted);margin-bottom:8px">${note}</div>
+      <div class="table-scroll"><table class="score-table"><thead><tr>
+        <th class="sticky-col" style="background:rgba(42,61,42,1)">Player</th>`;
+    holes.forEach(h => { html += `<th style="min-width:34px">${h}</th>`; });
+    html += `<th style="min-width:42px;color:var(--gold)">Gross</th></tr></thead><tbody>
+      <tr class="match-row-red">
+        <td class="sticky-col" style="background:rgba(201,64,64,0.08)">
+          <span style="display:flex;align-items:center;gap:5px"><span class="dot red"></span>${m.red}</span>
+        </td>`;
+    holes.forEach(h => {
+      html += `<td><input type="number" class="hole-inp" id="r3-m${m.id}-r-h${h}" min="1" max="15" inputmode="numeric" pattern="[0-9]*" oninput="updateR3MatchLive(${m.id})"></td>`;
+    });
+    html += `<td class="total-col" id="r3-m${m.id}-r-total">—</td></tr>
+      <tr class="match-row-blue">
+        <td class="sticky-col" style="background:rgba(48,96,168,0.08)">
+          <span style="display:flex;align-items:center;gap:5px"><span class="dot blue"></span>${m.blue}</span>
+        </td>`;
+    holes.forEach(h => {
+      html += `<td><input type="number" class="hole-inp" id="r3-m${m.id}-b-h${h}" min="1" max="15" inputmode="numeric" pattern="[0-9]*" oninput="updateR3MatchLive(${m.id})"></td>`;
+    });
+    html += `<td class="total-col" id="r3-m${m.id}-b-total">—</td></tr>
+      <tr>
+        <td class="sticky-col" style="background:rgba(42,61,42,0.95);font-size:0.7rem">Net (R/B)</td>`;
+    holes.forEach(h => {
+      html += `<td id="r3-m${m.id}-hole-${h}" style="font-size:0.65rem;color:var(--muted);text-align:center">—</td>`;
+    });
+    html += `<td class="total-col" id="r3-m${m.id}-match-status" style="font-size:0.68rem">—</td></tr>
+    </tbody></table></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function updateR3MatchLive(mid) {
+  const m = R3_MATCHES.find(x => x.id === mid);
+  if (!m) return;
+  let rSum = 0, bSum = 0, rAll = true, bAll = true;
+  let redW = 0, blueW = 0;
+  for (let h = 1; h <= 18; h++) {
+    const er = document.getElementById(`r3-m${mid}-r-h${h}`);
+    const eb = document.getElementById(`r3-m${mid}-b-h${h}`);
+    const cell = document.getElementById(`r3-m${mid}-hole-${h}`);
+    if (!er || !eb || !cell) continue;
+    const vr = parseInt(er.value, 10);
+    const vb = parseInt(eb.value, 10);
+    if (isNaN(vr)) rAll = false; else rSum += vr;
+    if (isNaN(vb)) bAll = false; else bSum += vb;
+    if (isNaN(vr) || isNaN(vb)) {
+      cell.textContent = '—';
+      cell.style.color = 'var(--muted)';
+      cell.style.fontWeight = 'normal';
+      continue;
+    }
+    const netR = vr - r3StrokeCount(m, m.red, h);
+    const netB = vb - r3StrokeCount(m, m.blue, h);
+    cell.textContent = `${netR}/${netB}`;
+    if (netR < netB) {
+      cell.style.color = 'var(--red-light)';
+      cell.style.fontWeight = '600';
+      redW++;
+    } else if (netB < netR) {
+      cell.style.color = 'var(--blue-light)';
+      cell.style.fontWeight = '600';
+      blueW++;
+    } else {
+      cell.style.color = 'var(--parchment)';
+      cell.style.fontWeight = 'normal';
+    }
+  }
+  const tr = document.getElementById(`r3-m${mid}-r-total`);
+  const tb = document.getElementById(`r3-m${mid}-b-total`);
+  const st = document.getElementById(`r3-m${mid}-match-status`);
+  if (tr) tr.textContent = rAll ? rSum : '—';
+  if (tb) tb.textContent = bAll ? bSum : '—';
+  if (st) {
+    const halved = 18 - redW - blueW;
+    st.innerHTML = `🔴${redW} · 🔵${blueW} · H${halved}`;
+  }
+}
+
 // ═══════════════════════════════════════════════════════
 //  TOGGLE
 // ═══════════════════════════════════════════════════════
@@ -977,26 +1026,76 @@ function renderR2Results(rd) {
 //  ROUND 3
 // ═══════════════════════════════════════════════════════
 function calcR3() {
-  const matches = [1,2,3].map(i => ({
-    red:    document.getElementById(`r3-m${i}-red`).value,
-    blue:   document.getElementById(`r3-m${i}-blue`).value,
-    result: document.getElementById(`r3-m${i}-result`).value,
-  }));
-  for (let i = 0; i < 3; i++) {
-    if (!matches[i].red || !matches[i].blue || !matches[i].result) {
-      alert(`Please complete all fields for Match ${i+1}.`); return;
+  const matchResults = [];
+  for (const m of R3_MATCHES) {
+    const redGross = [];
+    const blueGross = [];
+    let allFilled = true;
+    for (let h = 1; h <= 18; h++) {
+      const vr = parseInt(document.getElementById(`r3-m${m.id}-r-h${h}`).value, 10);
+      const vb = parseInt(document.getElementById(`r3-m${m.id}-b-h${h}`).value, 10);
+      if (isNaN(vr) || isNaN(vb)) allFilled = false;
+      redGross.push(isNaN(vr) ? null : vr);
+      blueGross.push(isNaN(vb) ? null : vb);
     }
+    if (!allFilled) {
+      alert(`Please enter all 18 hole scores for Match ${m.id} (${m.red} vs ${m.blue}).`);
+      return;
+    }
+    let redHolesWon = 0, blueHolesWon = 0;
+    const holeOutcomes = [];
+    for (let h = 1; h <= 18; h++) {
+      const vr = redGross[h - 1];
+      const vb = blueGross[h - 1];
+      const netR = vr - r3StrokeCount(m, m.red, h);
+      const netB = vb - r3StrokeCount(m, m.blue, h);
+      if (netR < netB) {
+        redHolesWon++;
+        holeOutcomes.push('red');
+      } else if (netB < netR) {
+        blueHolesWon++;
+        holeOutcomes.push('blue');
+      } else {
+        holeOutcomes.push('halve');
+      }
+    }
+    let winner;
+    if (redHolesWon > blueHolesWon) winner = 'red';
+    else if (blueHolesWon > redHolesWon) winner = 'blue';
+    else winner = 'tie';
+
+    matchResults.push({
+      id: m.id,
+      red: m.red,
+      blue: m.blue,
+      redGross,
+      blueGross,
+      holeOutcomes,
+      redHolesWon,
+      blueHolesWon,
+      halvedHoles: 18 - redHolesWon - blueHolesWon,
+      winner,
+    });
   }
 
   const indPts = { CJ:0, Josh:0, Ben:0, Sam:0, Scott:0, Jeremy:0 };
   let redTeamPts = 0, blueTeamPts = 0;
-  matches.forEach(m => {
-    if (m.result==='red')  { indPts[m.red]  += 1; redTeamPts  += 1; }
-    else if (m.result==='blue') { indPts[m.blue] += 1; blueTeamPts += 1; }
-    else { indPts[m.red]  += 0.5; indPts[m.blue] += 0.5; redTeamPts += 0.5; blueTeamPts += 0.5; }
+  matchResults.forEach(mr => {
+    if (mr.winner === 'red') {
+      indPts[mr.red] += 1;
+      redTeamPts += 1;
+    } else if (mr.winner === 'blue') {
+      indPts[mr.blue] += 1;
+      blueTeamPts += 1;
+    } else {
+      indPts[mr.red] += 0.5;
+      indPts[mr.blue] += 0.5;
+      redTeamPts += 0.5;
+      blueTeamPts += 0.5;
+    }
   });
 
-  state.rounds.r3 = { matches, indPts, redTeamPts, blueTeamPts };
+  state.rounds.r3 = { matches: matchResults, indPts, redTeamPts, blueTeamPts };
   recomputeTotals();
   renderR3Results(state.rounds.r3);
   setBadge('r3', 'complete');
@@ -1006,12 +1105,19 @@ function calcR3() {
 
 function renderR3Results(rd) {
   let html = `<div style="margin-top:14px">
-    <table class="results-table"><thead><tr><th>#</th><th>Red</th><th>Blue</th><th>Result</th></tr></thead><tbody>`;
-  rd.matches.forEach((m,i) => {
-    const tag = m.result==='red'  ? `<span class="result-tag result-win">Red wins</span>` :
-                m.result==='blue' ? `<span class="result-tag result-lose">Blue wins</span>` :
-                                    `<span class="result-tag result-tie">Halved</span>`;
-    html += `<tr><td>${i+1}</td><td>${m.red}</td><td>${m.blue}</td><td>${tag}</td></tr>`;
+    <table class="results-table"><thead><tr>
+      <th>#</th><th>Match</th><th>Holes</th><th>Result</th></tr></thead><tbody>`;
+  rd.matches.forEach((mr, i) => {
+    const summary = `🔴${mr.redHolesWon} · 🔵${mr.blueHolesWon} · H${mr.halvedHoles}`;
+    let tag;
+    if (mr.winner === 'red') {
+      tag = `<span class="result-tag result-win">${mr.red} wins</span>`;
+    } else if (mr.winner === 'blue') {
+      tag = `<span class="result-tag result-lose">${mr.blue} wins</span>`;
+    } else {
+      tag = `<span class="result-tag result-tie">Halved</span>`;
+    }
+    html += `<tr><td>${i + 1}</td><td><span class="dot red"></span>${mr.red} vs <span class="dot blue"></span>${mr.blue}</td><td style="font-size:0.72rem">${summary}</td><td>${tag}</td></tr>`;
   });
   html += `</tbody></table>
     <div style="margin-top:8px;font-size:0.75rem;color:var(--parchment)">
@@ -1147,6 +1253,7 @@ function clearRound(r) {
   setBadge(r, 'pending');
   document.querySelectorAll(`#body-${r} input, #body-${r} select`).forEach(el => { el.value = ''; });
   if (r==='r1') buildR1Inputs();
+  if (r==='r3') buildR3Inputs();
   recomputeTotals();
   updateStandings();
   saveToStorage();
@@ -1188,13 +1295,20 @@ function restoreR2UI(rd) {
 }
 
 function restoreR3UI(rd) {
-  rd.matches.forEach((m,i) => {
-    document.getElementById(`r3-m${i+1}-red`).value    = m.red;
-    document.getElementById(`r3-m${i+1}-blue`).value   = m.blue;
-    document.getElementById(`r3-m${i+1}-result`).value = m.result;
+  if (!rd.matches || !rd.matches.length || !Array.isArray(rd.matches[0].redGross)) return;
+  rd.matches.forEach(mr => {
+    for (let h = 1; h <= 18; h++) {
+      const er = document.getElementById(`r3-m${mr.id}-r-h${h}`);
+      const eb = document.getElementById(`r3-m${mr.id}-b-h${h}`);
+      const rg = mr.redGross[h - 1];
+      const bg = mr.blueGross[h - 1];
+      if (er && rg != null && rg !== undefined) er.value = rg;
+      if (eb && bg != null && bg !== undefined) eb.value = bg;
+    }
+    updateR3MatchLive(mr.id);
   });
   renderR3Results(rd);
-  setBadge('r3','complete');
+  setBadge('r3', 'complete');
 }
 
 function restoreR4UI(rd) {
@@ -1211,6 +1325,7 @@ function restoreR4UI(rd) {
 // ═══════════════════════════════════════════════════════
 buildR1Inputs();
 buildR4Inputs();
+buildR3Inputs();
 toggleRound('r1');
 loadFromStorage();
 </script>
