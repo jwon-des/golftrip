@@ -508,3 +508,26 @@ body.round-info-page .site-nav {
 .fine-print-section li + li {
   margin-top: 6px;
 }
+
+/* ——— Team chips (same as individual standings on index) ——— */
+.team-chip {
+  font-size: 0.58rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  text-transform: lowercase;
+}
+.team-chip.red {
+  background: rgba(201, 64, 64, 0.3);
+  color: var(--red-light);
+}
+.team-chip.blue {
+  background: rgba(48, 96, 168, 0.3);
+  color: var(--blue-light);
+}
+.pairing-note {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-left: 0.35rem;
+}
