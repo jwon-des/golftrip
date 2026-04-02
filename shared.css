@@ -410,6 +410,7 @@ body.round-info-page .site-nav {
 
 /* ——— Footer ——— */
 .site-footer {
+  width: 100%;
   border-top: 1px solid rgba(255, 233, 195, 0.12);
   background: rgba(42, 61, 42, 0.72);
   backdrop-filter: blur(10px);
@@ -417,6 +418,7 @@ body.round-info-page .site-nav {
 }
 
 .site-footer-inner {
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 18px 16px 22px;
@@ -456,12 +458,12 @@ body.round-info-page .site-nav {
 }
 
 .fine-print-card {
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 233, 195, 0.12);
-  border-radius: 14px;
-  padding: 22px 18px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .fine-print-title {
@@ -503,7 +505,7 @@ body.round-info-page .site-nav {
 
 .fine-print-section ul,
 .fine-print-section ol {
-  margin: 10px 0 0 1.15rem;
+  margin: 10px 0 0 1.55rem;
 }
 
 .fine-print-section li + li {
