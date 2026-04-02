@@ -74,20 +74,37 @@ a:visited {
 }
 
 .site-nav-home {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-family: "DM Mono", monospace;
+  font-size: 0.98rem;
+  font-weight: 400;
   color: var(--gold);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.1em;
   line-height: 1.25;
+  /* Override global link underline for the nav link only */
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .site-nav-home:hover {
   color: var(--gold-light);
 }
 
+.site-nav-home::before {
+  content: "";
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background-image: url("images/NC%20logo-inv.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
 .site-nav-home-sub {
-  display: block;
+  display: none;
   font-family: "DM Mono", monospace;
   font-size: 0.58rem;
   font-weight: 400;
@@ -172,6 +189,8 @@ a:visited {
   font-size: 0.78rem;
   color: var(--cream);
   line-height: 1.35;
+  /* Override global link underline for dropdown nav only */
+  text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: background 0.15s;
 }
