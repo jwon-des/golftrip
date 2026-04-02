@@ -479,7 +479,7 @@
     </div>
     <div class="round-body" id="body-r1">
       <div class="info-box">
-        <strong>Team scoring:</strong> Each hole, the best 2 gross scores from each team are summed. Lower sum wins the hole. Most holes won = 1 team point.<br>
+        <strong>Team scoring:</strong> Each hole, the best 2 gross scores from each team are summed. Lower sum wins the hole. Most holes won = 1 team point (tie: lowest Best-2 total; still tied: split).<br>
         <strong>Individual:</strong> Lowest total gross = 2 pts · 2nd lowest = 1 pt.
       </div>
       <div id="r1-scorecard"></div>
@@ -881,9 +881,12 @@ function calcR1() {
   if (!allFilled) { alert('Please enter all 18 hole scores for all 6 players.'); return; }
 
   let redHoles = 0, blueHoles = 0;
+  let redBest2Total = 0, blueBest2Total = 0;
   for (let h = 0; h < 18; h++) {
     const rB = RED_NAMES.map(n=>holeScores[n][h]).sort((a,b)=>a-b).slice(0,2).reduce((a,b)=>a+b,0);
     const bB = BLUE_NAMES.map(n=>holeScores[n][h]).sort((a,b)=>a-b).slice(0,2).reduce((a,b)=>a+b,0);
+    redBest2Total += rB;
+    blueBest2Total += bB;
     if (rB < bB) redHoles++;
     else if (bB < rB) blueHoles++;
   }
@@ -891,7 +894,12 @@ function calcR1() {
   let redTeamPts = 0, blueTeamPts = 0, teamWinner;
   if (redHoles > blueHoles)       { redTeamPts  = 1; teamWinner = 'red'; }
   else if (blueHoles > redHoles)  { blueTeamPts = 1; teamWinner = 'blue'; }
-  else                             { redTeamPts  = 0.5; blueTeamPts = 0.5; teamWinner = 'tie'; }
+  else {
+    // Tie-breaker: lowest total of "best 2 of 3" gross across 18 holes.
+    if (redBest2Total < blueBest2Total)      { redTeamPts  = 1; teamWinner = 'red'; }
+    else if (blueBest2Total < redBest2Total) { blueTeamPts = 1; teamWinner = 'blue'; }
+    else                                      { redTeamPts  = 0.5; blueTeamPts = 0.5; teamWinner = 'tie'; }
+  }
 
   const totals = PLAYERS.map(p => ({...p, score: holeScores[p.name].reduce((a,b)=>a+b,0)}))
                          .sort((a,b) => a.score - b.score);
@@ -899,7 +907,7 @@ function calcR1() {
   indPts[totals[0].name] = 2;
   indPts[totals[1].name] = 1;
 
-  state.rounds.r1 = { holeScores, indPts, redTeamPts, blueTeamPts, teamWinner, redHoles, blueHoles, totals };
+  state.rounds.r1 = { holeScores, indPts, redTeamPts, blueTeamPts, teamWinner, redHoles, blueHoles, redBest2Total, blueBest2Total, totals };
   recomputeTotals();
   renderR1Results(state.rounds.r1);
   setBadge('r1', 'complete');
@@ -921,6 +929,7 @@ function renderR1Results(rd) {
   html += `</tbody></table>
   <div style="margin-top:10px;font-size:0.75rem;color:var(--parchment)">
     Holes won: 🔴 Red <strong>${rd.redHoles}</strong> &nbsp;|&nbsp; 🔵 Blue <strong>${rd.blueHoles}</strong> &nbsp;|&nbsp; Halved <strong>${18-rd.redHoles-rd.blueHoles}</strong><br>
+    Best-2 gross total: 🔴 Red <strong>${rd.redBest2Total ?? '—'}</strong> &nbsp;|&nbsp; 🔵 Blue <strong>${rd.blueBest2Total ?? '—'}</strong><br>
     Team point: ${rd.teamWinner==='tie'?'Split (0.5 each)':rd.teamWinner==='red'?'🔴 Red (+1)':'🔵 Blue (+1)'}
   </div></div>`;
   document.getElementById('r1-results').innerHTML = html;
