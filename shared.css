@@ -468,11 +468,11 @@ body.round-info-page .site-nav {
 
 .fine-print-title {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.1rem, 7vw, 2.7rem);
-  font-weight: 900;
+  font-size: 1.4rem;
+  font-weight: 800;
   color: var(--gold);
-  letter-spacing: -0.02em;
-  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+  margin: 10px 0 18px;
 }
 
 .fine-print-title .kicker {
@@ -486,7 +486,7 @@ body.round-info-page .site-nav {
 
 .fine-print-section h2 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--gold);
   margin-bottom: 10px;
@@ -494,18 +494,15 @@ body.round-info-page .site-nav {
 
 .fine-print-section p,
 .fine-print-section li {
-  font-size: 0.9rem;
+  font-size: 0.76rem;
   line-height: 1.55;
   color: rgba(255, 233, 195, 0.9);
 }
 
-.fine-print-section .muted {
-  color: rgba(255, 233, 195, 0.72);
-}
-
 .fine-print-section ul,
 .fine-print-section ol {
-  margin: 10px 0 0 1.55rem;
+  margin: 10px 0 0 1.95rem;
+  padding-left: 0.2rem;
 }
 
 .fine-print-section li + li {
