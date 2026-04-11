@@ -539,7 +539,7 @@
     </div>
     <div class="round-body" id="body-r3">
       <div class="info-box">
-        <strong>Handicap:</strong> Sam −2 strokes and Ben −9 over the round (taken on HCP holes). <strong>Scoring:</strong> Enter gross per hole; net decides each hole. Most holes won wins the match (halved if tied). Each match = 1 pt: win = 1 ind + 1 team · halved = 0.5 each.
+        <strong>Handicap:</strong> Sam −3 strokes and Ben −9 over the round (taken on HCP holes). <strong>Scoring:</strong> Enter gross per hole; net decides each hole. Most holes won wins the match (halved if tied). Each match = 1 pt: win = 1 ind + 1 team · halved = 0.5 each.
       </div>
       <div id="r3-matches"></div>
       <div style="display:flex;gap:8px">
@@ -564,7 +564,7 @@
     </div>
     <div class="round-body" id="body-r4">
       <div class="info-box">
-        <strong>Course handicap strokes:</strong> CJ −0, Sam −2, Josh −3, Scott −3, Jeremy −4, Ben −14.<br>
+        <strong>Course handicap strokes:</strong> CJ −0, Sam −3, Josh −3, Scott −3, Jeremy −4, Ben −14.<br>
         <strong>Individual:</strong> 1st = 3 pts · 2nd = 2 pts · 3rd = 1 pt.<br>
         <strong>Team:</strong> Top 4 net scores each earn 1 point for their team (max 3 per team).
       </div>
@@ -620,7 +620,7 @@ const PLAYERS = [
   { name:'Scott',  team:'red',  hcp:10.8 },
   { name:'Jeremy', team:'red',  hcp:11.5 },
 ];
-const COURSE_HCP = { CJ:0, Josh:3, Ben:14, Sam:2, Scott:3, Jeremy:4 };
+const COURSE_HCP = { CJ:0, Josh:3, Ben:14, Sam:3, Scott:3, Jeremy:4 };
 const RED_NAMES  = ['Sam','Scott','Jeremy'];
 const BLUE_NAMES = ['CJ','Josh','Ben'];
 const LS_KEY = 'ncgolf-scores-v3';
@@ -628,7 +628,7 @@ const LS_KEY = 'ncgolf-scores-v3';
 /** Round 3 fixed singles matchups; strokeHoles[player] = holes where that player receives 1 stroke */
 const R3_MATCHES = [
   { id: 1, red: 'Scott',  blue: 'Josh',   strokeHoles: {} },
-  { id: 2, red: 'Sam',    blue: 'CJ',     strokeHoles: { Sam: [2, 17] } },
+  { id: 2, red: 'Sam',    blue: 'CJ',     strokeHoles: { Sam: [2, 5, 17] } },
   { id: 3, red: 'Jeremy', blue: 'Ben',    strokeHoles: { Ben: [1, 2, 5, 9, 12, 13, 14, 16, 17] } },
 ];
 
